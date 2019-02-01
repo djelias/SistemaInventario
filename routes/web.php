@@ -11,6 +11,34 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/Laferre', function () {
     return view('welcome');
+});
+
+
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+	Auth::routes();
+	Route::group(['middleware' => 'auth'], function() {
+    Route::get('gestion', function()
+	{
+   return view('gestion');
+	});
+ });	
+
+
+Route::group(['middleware' => 'admin'], function() {
+
+	Route::resource('usuarios','UserController');
+	
+});
+Route::group(['middleware' => 'auth'], function() {
+
+ Route::resource('tableCliente','TableClienteController');
+ Route::resource('tableProductos','TableProductosController');
+ Route::resource('tableVentas','TableVentasController');
+ Route::resource('tableCompras','TableComprasController');
 });
