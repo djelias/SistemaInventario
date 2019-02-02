@@ -13,11 +13,12 @@
 				<div class="row">
 				<div class="col-md-3">
 					<div class="form-group">
-						<label for="cliente">Proveedor</label>
+						<label for="cliente">Cliente</label>
 						<i><datalist name="cliente" id="cliente">
 							@foreach($personas as $per)
 							<option value="{{ $per->id }}">
 								{{ $per->Nombre_Cliente }}
+								{{ $per->Apellido_Cliente }}
 							</option>
 							@endforeach
 						</datalist></i> 
@@ -53,20 +54,19 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="producto">Producto</label>
-							<i><datalist name="Productos" id="Productos">
+								<input type="text" id="Productos" class="form-control" list="Productoslist" placeholder="Escriba el producto">
+							<datalist name="Productos" id="Productoslist">
 									@foreach($productos as $art)
 									<option value="{{ $art->id }}">
 										{{ $art->nombreProductos }}{{" ->Cant: "}}
 										{{ $art->cantidadProductos }}{{" ->Precio: "}}
 										{{ $art->preciosProductos }}
-										<?php 
-										$prec = $art->preciosProductos;
-										 ?>
+										
 									</option>
 									@endforeach
-							</datalist></i>
-							<i>{{ Form::text('Productos',NULL, ['class'=>'form-control', 'id'=>'Productos', 'list'=>'Productos', 'placeholder'=>'Nombre del producto...']) }}</i>
+							</datalist>
 							</div>
+							
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
@@ -77,7 +77,7 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label for="pprecio_venta">Precio venta</label>
-								<input type="number" name="pprecio_venta" id="pprecio_venta" class="form-control" placeholder="{{$prec}}" step="0.01" value="$prec">
+								<input type="number" name="pprecio_venta" id="pprecio_venta" class="form-control" placeholder="0.00" step="0.01">
 							</div>
 						</div>
 						<div class="col-md-2">
@@ -144,7 +144,7 @@
 	function agregar(){
 		//Obtener los valores de los inputs
 		Productos = $("#Productos").val();
-		producto = $("#Productos option:selected").text();
+		producto = $("#Productos ").text();
 		cantidad = $("#pcantidad").val();
 		precio_venta = $("#pprecio_venta").val();
 
@@ -155,7 +155,7 @@
 			subtotal[cont] = (cantidad * precio_venta);
 			totals = totals + subtotal[cont];
 
-			var fila = '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-warning" onclick="eliminar('+cont+')">X</button></td><td><input type="hidden" name="Productos[]" value="'+Productos+'">'+producto+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td>'+subtotal[cont]+'</td></tr>';
+			var fila = '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-warning" onclick="eliminar('+cont+')">X</button></td><td><input type="hidden" name="Productos[]" value="'+Productos+'">'+Productos+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td>'+subtotal[cont]+'</td></tr>';
 
 			cont++;
 			limpiar();

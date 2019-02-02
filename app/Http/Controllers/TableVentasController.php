@@ -62,7 +62,7 @@ class TableVentasController extends Controller
         $factura->notaEnvio = $request->get('notaEnvio');
         $factura->save();
 
-
+        $id_factura=$factura->id;
         $Productos = $request->get('Productos');
         $cantidad = $request->get('cantidad');
 
@@ -72,7 +72,7 @@ class TableVentasController extends Controller
         $cont = 0;
         while ($cont < count($Productos)) {
             $venta = new TableVentas;
-            $venta->id_facturas = $request->get('id_facturas');
+            $venta->id_facturas = $id_factura;
             $venta->id_productos = $Productos[$cont];
             $venta->cantidad = $cantidad[$cont];
             $venta->notaEnvio = $request->get('notaEnvio');
@@ -88,6 +88,8 @@ class TableVentasController extends Controller
 
             $cont = $cont + 1;
         }
+        $factura->totals = $totalf;
+        $factura->save();
 
         //$factura->totals = $totalf;
         
