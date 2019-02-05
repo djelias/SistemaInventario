@@ -19,8 +19,8 @@ class TableVentasController extends Controller
     public function index(Request $request)
     {
         $nombre =$request->get('nombre');
-        $tableVenta = TableVentas::orderBy('id','DESC')->nombre($nombre)->paginate(10);
-        return view('tableVentas.index',compact('tableVenta'));
+        $tableFactura = TableFacturas::orderBy('id','DESC')->nombre($nombre)->paginate(20);
+        return view('tableVentas.index',compact('tableFactura'));
     }
 
     /**

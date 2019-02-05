@@ -34,16 +34,17 @@
     <tr>
       <th with="80px">No</th>
       <th style="text-align:center">Nombre cliente</th>
-      <th style="text-align:center">Numero de factura</th>
+      <th style="text-align:center">Numero de nota</th>
       <th style="text-align:center">Total</th>
       <th style="text-align:center">Accion</th>
     </tr>
     <?php $no=1; ?>
-    @foreach ($tableVenta as $key => $value)
+    @foreach ($tableFactura as $key => $value)
     <tr>
         <td>{{$no++}}</td>
-        <td>{{ $value->No_Facturas }}</td>
-        <td>{{ $value->TableProductos->nombreProductos }}</td>
+        <td>{{ $value->TableCliente->Nombre_Cliente }} {{ $value->TableCliente->Apellido_Cliente }}</td>
+        <td>{{ $value->notaEnvio }}</td>
+        <td>{{ $value->totals }}</td>
         <td>
           <a class="btn btn-info btn-lg" data-toggle="tooltip" data-placement="top" title="Detalles" href="{{route('tableVentas.show',$value->id)}}">
               <i class="glyphicon glyphicon-list-alt"></i></a>
@@ -56,7 +57,7 @@
       </tr>
     @endforeach
   </table>
-  {!!$tableVenta->render()!!}
+  {!!$tableFactura->render()!!}
  <div class="text-center">
     <a class="btn btn-primary" href="{{ url('/gestion') }}">Regresar</a>
   </div>

@@ -79,7 +79,7 @@ class TableComprasController extends Controller
             $compra->save();
 
             $pro = TableProductos::find($Productos[$cont]);
-            $total = ($pro->preciosProductos*$cantidad[$cont]);
+            $total = ($pro->preciocompraProductos*$cantidad[$cont]);
             $totalf = ($totalf + $total);
 
             $cant = ($pro->cantidadProductos + $cantidad[$cont]);
