@@ -111,6 +111,7 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="{{ route('tableVentas.index') }}">Venta </a></li>
+          <li><a href="{{ route('tableVentas.detalle') }}">Detalle </a></li>
         </ul>
       </li>
     </ul>
@@ -121,6 +122,17 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="{{ route('tableCompras.index') }}">Compra </a></li>
+          <li><a href="{{ route('tableCompras.detalle') }}">Detalle </a></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          Pago a proveedores<b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ route('control.index') }}">Listado </a></li>
         </ul>
       </li>
     </ul>

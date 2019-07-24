@@ -3,7 +3,7 @@
   <div class="row">
     <div class ="col-sm-12">
       <div class="full.right">
-      <h2>Compras</h2>
+      <h2>Ventas</h2>
       <br>
       </div>
     </div>
@@ -19,10 +19,10 @@
       </div>
   @endif
       <div>
-        <a href="{{route('tableCompras.create')}}" class="btn btn-success btn-lg">
+        <a href="{{route('tableVentas.create')}}" class="btn btn-success btn-lg">
             <i class="glyphicon glyphicon-plus"> NUEVO</i>
         </a>
-        {!! Form::open(['route'=>'tableCompras.index', 'method'=>'GET', 'class'=>'navbar-form pull-right', 'role'=>'search'])!!}
+        {!! Form::open(['route'=>'control.index', 'method'=>'GET', 'class'=>'navbar-form pull-right', 'role'=>'search'])!!}
         <div class="input-group"> 
             {!! Form::text('nombre', null, ['class'=>'form-control', 'placeholder'=>'Buscar'])!!}
         </div>
@@ -34,36 +34,53 @@
     <tr>
       <th with="80px">No</th>
       <th style="text-align:center">Nombre proveedor</th>
-      <th style="text-align:center">Numero de factura</th>
-      <th style="text-align:center">Numero</th>
-      <th style="text-align:center">Fecha</th>
       <th style="text-align:center">Total</th>
-      <th style="text-align:center">Accion</th>
+      <th style="text-align:center">Detalle</th>
     </tr>
-    <?php $no=1; ?>
-    @foreach ($tableFacturasc as $key => $value)
-    @if($value->visible =="1")
+    <?php $no=1;
+    $cli=0;
+    ?>
+    @foreach($control as $contr)
     <tr>
-        <td>{{$no++}}</td>
-        <td>{{ $value->TableCliente->Nombre_Cliente }} {{ $value->TableCliente->Apellido_Cliente }}</td>
-        <td>{{ $value->estado }}</td>
-        <td>{{ $value->notaEnvio }}</td>
-        <td>{{ $value->fecha }}</td>
-        <td>{{ $value->totals }}</td>
+      <td>{{$no++}}</td>
         <td>
-          <a class="btn btn-info btn-lg" data-toggle="tooltip" data-placement="top" title="Detalles" href="{{route('tableCompras.show',$value->id)}}">
+          @foreach ($cliente as $key => $value)
+          @if($value->id == $contr->id_proveedor)
+          <?php
+            $cli=$value->id;
+          ?>
+          {{ $value->Nombre_Cliente}} {{ $value->Apellido_Cliente}}
+          @endif
+          @endforeach
+        </td>
+        <td>
+          <?php 
+    $subt=0;
+    $tot=0;
+    ?>
+          @foreach ($fact as $key => $val)
+          @if($val->id_proveedor == $contr->id_proveedor)
+          <?php
+
+            $subt=($val->totals);
+            $tot=$tot+$subt;
+          ?>
+
+          @endif
+          
+
+          @endforeach
+          {{$tot}}
+        </td>
+        <td>
+          <a class="btn btn-info btn-lg" data-toggle="tooltip" data-placement="top" title="Detalles" href="{{route('control.show',$cli)}}">
               <i class="glyphicon glyphicon-list-alt"></i></a>
           <a class="btn btn-primary btn-lg" data-toggle="tooltip" data-placement="top" title="Editar" href="{{route('tableCompras.edit',$value->id)}}">
               <i class="glyphicon glyphicon-pencil"></i></a>
-            {!! Form::open(['method' => 'DELETE','route' => ['tableCompras.visible', $value->id],'style'=>'display:inline']) !!}
-              <button type="submit" data-toggle="tooltip" data-placement="top" title="Eliminar" style="display: inline;" class="btn btn-danger btn-lg" onclick="return confirm('¿Esta seguro de eliminar este Registro?')"><i class="glyphicon glyphicon-trash" ></i></button>
-            {!! Form::close() !!}
         </td>
       </tr>
-      @endif
     @endforeach
   </table>
-  {!!$tableFacturasc->render()!!}
  <div class="text-center">
     <a class="btn btn-primary" href="{{ url('/gestion') }}">Regresar</a>
   </div>

@@ -13,11 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @if (Auth::user()->usuario=='Administrador')
-                    Ingreso Correctamente como usuario Administrador!
-                    @else
-                    Ingreso Correctamente como usuario Docente!
-                    @endif
+                    Bienvenido al sistema de inventario!
                 </div>
                 <div class="text-center">
                         <a class="btn btn-primary" href="{{ url('/gestion') }}">Pagina Principal</a>

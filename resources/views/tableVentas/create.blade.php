@@ -168,6 +168,7 @@
 	}
 
 	function limpiar(){
+		$("#Productos").val("");
 		$("#pcantidad").val("");
 		$("#pprecio_venta").val("");
 	}

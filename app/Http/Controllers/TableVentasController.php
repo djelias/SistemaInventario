@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\TableProductos;
 use App\TableVentas;
+use App\TableCompras;
 use App\TableCliente;
 use App\TableFacturas;
 use tableVentas1\http\Request\TableVentasRequest;
@@ -102,10 +103,14 @@ class TableVentasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
-        $tableVenta = TableVentas::find($id);
-      return view('tableVentas.show',compact('tableVenta'));
+        $fecha = $request->get('fechainicial');
+        $tableFacturas = TableFacturas::orderBy('id','DESC')->nombre($fecha)->paginate(80);
+        $tableVentas = TableVentas::all();
+        $tableProductos = TableProductos::all();
+        $tableCompras = TableCompras::all();
+        return view('tableVentas.show',compact('tableVentas','tableProductos','tableCompras','tableFacturas', 'tableVent'));
     }
 
     /**
@@ -153,6 +158,18 @@ class TableVentasController extends Controller
         return redirect()->route('tableVentas.index')->with('danger','No se Puede eliminar este registro porque esta asociado con otra asignación');
         
     }
+    }
+
+    public function detalle(Request $request)
+    {
+        $fechai =$request->get('fechainicial');
+        $fechaf =$request->get('fechafinal');
+        $fecha = TableFacturas::where("fecha",">=","$fechai")
+         ->where("fecha","<=","$fechaf")
+         ->get();
+        $tableVentas = TableVentas::orderBy('id','DESC')->nombre($nombre)->paginate(20);
+        $tableProductos = TableProductos::all();
+        return view('tableVentas.detalle',compact('tableVentas','fecha','tableProductos'));
     }
 }
  

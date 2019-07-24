@@ -28,8 +28,8 @@
 					<div class="form-group">
 						<label for="estado">Estado</label>
 						<select name="estado" class="form-control">
-							<option value="Cancelado">Cancelado</option>
 							<option value="Pendiente">Pendiente</option>
+							<option value="Cancelado">Cancelado</option>
 						</select> 
 					</div>
 				</div><!-- fin col-md-3 -->
@@ -73,7 +73,7 @@
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<label for="pprecio_venta">Precio venta</label>
+								<label for="pprecio_venta">Precio compra</label>
 								<input type="number" name="pprecio_venta" id="pprecio_venta" class="form-control" placeholder="0.00" step="0.01">
 							</div>
 						</div>

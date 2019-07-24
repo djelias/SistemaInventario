@@ -3,13 +3,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\TableProductos;
-use App\TableCompras;
-use App\TableCliente;
+use App\Control;
 use App\TableFacturasc;
-use tableCompras1\http\Request\TableComprasRequest;
+use App\TableCliente;
+use DB;
+use control1\http\Request\ControlRequest;
 
-class TableComprasController extends Controller
+class ControlController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +18,10 @@ class TableComprasController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre =$request->get('nombre');
-        $tableFacturasc = TableFacturasc::orderBy('id','DESC')->nombre($nombre)->paginate(10);
-        return view('tableCompras.index',compact('tableFacturasc'));
+        $cliente = TableCliente::all();
+        $fact = TableFacturasc::all();
+        $control = DB::table('Table_Facturascs')->select('id_proveedor')->distinct()->get();
+        return view('control.index',compact('control','cliente','fact'));
     }
 
     /**
@@ -33,9 +34,9 @@ class TableComprasController extends Controller
     {
         $personas = TableCliente::all();
         $productos = TableProductos::all();
-        $facturac = TableFacturasc::all();
-        $compras = TableCompras::all();
-        return view('tableCompras.create', compact('personas', 'productos', 'facturac', 'compras'));
+        $factura = TableFacturas::all();
+        $venta = TableVentas::all();
+        return view('tableVentas.create', compact('personas', 'productos', 'factura', 'venta'));
     }
 
     /**
@@ -56,15 +57,13 @@ class TableComprasController extends Controller
         
         TableVentas::create($request->all());
         return redirect()->route('tableVentas.create')->with('success','Venta guardado con éxito');*/
-        $factura = new TableFacturasc;
-        $factura->id_proveedor = $request->get('id_proveedor'); 
+        $factura = new TableFacturas;
+        $factura->cliente = $request->get('cliente'); 
         $factura->fecha = $request->get('fecha');
-        $factura->estado = $request->get('estado');
         $factura->notaEnvio = $request->get('notaEnvio');
         $factura->save();
 
-
-        $id_facturac=$factura->id;
+        $id_factura=$factura->id;
         $Productos = $request->get('Productos');
         $cantidad = $request->get('cantidad');
 
@@ -73,18 +72,18 @@ class TableComprasController extends Controller
         $cant = 0;
         $cont = 0;
         while ($cont < count($Productos)) {
-            $compra = new TableCompras;
-            $compra->id_facturascs = $id_facturac;
-            $compra->id_productos = $Productos[$cont];
-            $compra->cantidad = $cantidad[$cont];
-            $compra->notaEnvio = $request->get('notaEnvio');
-            $compra->save();
+            $venta = new TableVentas;
+            $venta->id_facturas = $id_factura;
+            $venta->id_productos = $Productos[$cont];
+            $venta->cantidad = $cantidad[$cont];
+            $venta->notaEnvio = $request->get('notaEnvio');
+            $venta->save();
 
             $pro = TableProductos::find($Productos[$cont]);
-            $total = ($pro->preciocompraProductos*$cantidad[$cont]);
+            $total = ($pro->preciosProductos*$cantidad[$cont]);
             $totalf = ($totalf + $total);
 
-            $cant = ($pro->cantidadProductos + $cantidad[$cont]);
+            $cant = ($pro->cantidadProductos - $cantidad[$cont]);
             $pro->cantidadProductos = $cant;
             $pro->save();
 
@@ -95,7 +94,7 @@ class TableComprasController extends Controller
 
         //$factura->totals = $totalf;
         
-        return redirect()->route('tableCompras.create')->with('success','Compra guardada con éxito');
+        return redirect()->route('tableVentas.create')->with('success','Venta guardado con éxito');
     }
 
     /**
@@ -106,10 +105,9 @@ class TableComprasController extends Controller
      */
     public function show($id)
     {
-        $tableCli = TableCliente::all();
-        $tableCompras = TableCompras::all();
-        $tableFacturasc = TableFacturasc::all();
-        return view('tableCompras.detalle',compact('tableCompras','tableFacturasc','tableCli'));
+        $tableFacturasc = TableCliente::find($id);
+        $tableFac = TableFacturasc::all();
+        return view('control.show',compact('tableFacturasc','tableFac'));
     }
 
     /**
@@ -120,8 +118,8 @@ class TableComprasController extends Controller
      */
     public function edit($id)
     {
-        $tableCompras = TableCompras::find($id);
-        return view('tableCompras.edit',compact('tableCompras'));
+        $tableVenta = TableVentas::find($id);
+        return view('tableVentas.edit',compact('tableVenta'));
     }
 
     /**
@@ -134,12 +132,12 @@ class TableComprasController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
+          'id_facturas',
             'id_productos',
-            'cantidad',
-            'notaEnvio',
+            'cantidad'
         ]);
-        TableCompras::find($id)->update($request->all());
-        return redirect()->route('tableCompras.index')->with('success','Compra actualizada con exito');
+        TableVentas::find($id)->update($request->all());
+        return redirect()->route('tableVentas.index')->with('success','Venta actualizado con exito');
     }
 
     /**
@@ -150,29 +148,14 @@ class TableComprasController extends Controller
      */
     public function destroy($id)
     {
-        $facturac=TableFacturasc::find($id);
-        $facturac->estado="Cancelado";
-        $facturac->save();
-        return redirect()->route('tableCompras.detalle');
-
+        try{
+            TableVentas::find($id)->delete();
+        return redirect()->route('tableVentas.index')->with('success','Venta eliminado con exito');
+    } catch  (\Illuminate\Database\QueryException $e){
+        return redirect()->route('tableVentas.index')->with('danger','No se Puede eliminar este registro porque esta asociado con otra asignación');
+        
+    }
     }
 
-    public function visible($id)
-    {
-        $facturac=TableFacturasc::find($id);
-        $facturac->visible="0";
-        $facturac->save();
-        return redirect()->route('tableCompras.index');
-
-    }
-
-    public function detalle()
-    {
-        $tableCli = TableCliente::all();
-        $tableCompras = TableCompras::all();
-        $tableFacturasc = TableFacturasc::all();
-        $tableProductos = TableProductos::all();
-        return view('tableCompras.detalle',compact('tableCompras','tableProductos','tableFacturasc','tableCli'));
-    }
 }
  

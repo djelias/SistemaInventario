@@ -40,5 +40,25 @@ Route::group(['middleware' => 'auth'], function() {
  Route::resource('tableCliente','TableClienteController');
  Route::resource('tableProductos','TableProductosController');
  Route::resource('tableVentas','TableVentasController');
+
+
+ Route::resource('control','ControlController');
+
  Route::resource('tableCompras','TableComprasController');
+
+ Route::get('tableVentas/detalle', [
+      'uses'=> 'TableVentasController@detalle',
+      'as'  => 'tableVentas.detalle'
+  ]);
+
+Route::get('tableCompras/detalle', [
+      'uses'=> 'TableComprasController@detalle',
+      'as'  => 'tableCompras.detalle'
+  ]);
+
+Route::get('tableCompras/visible', [
+      'uses'=> 'TableComprasController@visible',
+      'as'  => 'tableCompras.visible'
+  ]);
+
 });

@@ -15,7 +15,7 @@ class TableFacturasc extends Model
 	}
 
 	public function TableCliente(){
-    return $this->belongsTo('App\TableCliente', 'cliente');
+    return $this->belongsTo('App\TableCliente', 'id_proveedor');
 }
 
 }
