@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Abono extends Model
+class Pagos extends Model
 {
-    protected $fillable = ['proveedor','fecha','estado','total', 'visibilidad'];
+    protected $fillable = ['proveedor','fecha','estado','pago'];
     protected $dates = ['created_at','updated_at'];
 
     public function scopeNombre($query, $proveedor)
@@ -16,7 +16,7 @@ class Abono extends Model
 
 
 	public function TableCliente(){
-    return $this->belongsTo('App\Abono', 'proveedor');
+    return $this->belongsTo('App\Pagos', 'proveedor');
 }
 
 }

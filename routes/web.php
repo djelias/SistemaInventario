@@ -62,3 +62,18 @@ Route::get('tableCompras/visible', [
   ]);
 
 });
+
+Route::get('control/factura/{id}', [
+      'uses'=> 'ControlController@factura',
+      'as'  => 'control.factura'
+  ]);
+
+Route::get('control/abono/{id}', [
+      'uses'=> 'ControlController@abono',
+      'as'  => 'control.abono'
+  ]);
+
+Route::get('control/guardar', [
+      'uses'=> 'ControlController@guardar',
+      'as'  => 'control.guardar'
+  ]);

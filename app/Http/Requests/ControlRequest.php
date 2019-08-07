@@ -26,7 +26,7 @@ class ControlRequest extends FormRequest
         return [
             'fecha'=> 'required',
             'estado'=> 'required',
-            'total'=> 'required',
+            'pago'=> 'required',
                 ];
     }
 }

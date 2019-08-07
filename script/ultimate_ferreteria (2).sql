@@ -130,7 +130,7 @@ CREATE TABLE `table_facturas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `cliente` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `totals` int(11) NULL,
+  `totals` float NULL,
    `created_at` timestamp,
    `updated_at` timestamp,
    constraint PK_tableFacturas primary key (id)
@@ -284,7 +284,7 @@ CREATE TABLE `table_productos` (
   `nombreProductos` varchar(45) NOT NULL,
   `preciosProductos` float NOT NULL,
   `descripcionProductos` varchar(200) NOT NULL,
-  `cantidadProductos` int(11) NOT NULL,
+  `cantidadProductos` float NOT NULL,
   `preciocompraProductos` float DEFAULT NULL,
   `Difererencia` float NOT NULL,
   `inventario` date NULL,
@@ -1627,19 +1627,13 @@ INSERT INTO `table_productos` (`id`, `nombreProductos`, `preciosProductos`, `des
 -- Estructura de tabla para la tabla `table_ventas`
 --
 
-CREATE TABLE `table_ventas` (
-  `idVentas` int(11) NOT NULL,
-  `No_Facturas` int(11) NOT NULL,
-  `Productos` int(10) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `importe` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 CREATE TABLE `table_ventas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_facturas` int(11) NULL,
   `id_productos` int(10) NOT NULL,
-  `cantidad` int(11) NOT NULL,
+  `cantidad` float NOT NULL,
   `importe` int(11) NULL,
    `created_at` timestamp,
    `updated_at` timestamp,
@@ -2297,11 +2291,11 @@ INSERT INTO `table_ventas` (`id`, `id_facturas`, `id_productos`, `cantidad`, `im
 
 -- --------------------------------------------------------
 
-CREATE TABLE `table_facturasc` (
+CREATE TABLE `table_facturascs` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_proveedor` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `totals` int(11) NULL,
+  `totals` float NULL,
   `estado` varchar(45) NOT NULL,
   `notaEnvio` int NOT NULL,
    `created_at` timestamp,
@@ -2313,7 +2307,7 @@ CREATE TABLE `table_compras` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_productos` int(10) NOT NULL,
   `id_facturasc` int(11) NULL,
-  `cantidad` int(11) NOT NULL,
+  `cantidad` float NOT NULL,
   `notaEnvio` int NOT NULL,
    `created_at` timestamp,
    `updated_at` timestamp,
@@ -2347,6 +2341,30 @@ INSERT INTO `USERS` (`id`, `usuario`, `name`, `email`, `password`, `tipo`, `apel
 (1, 'admin', 'Ferreteria', 'ferre@gmail.com', '$2y$10$Z1wsG.S9f/k4DQKiuqp/d.i9KaDghoHqxAVw0fDw7KyQEh0fLzRoa', 'Administrador', 'Elias', 43121223, 321132),
 (2, 'Rigo', 'Rigoberto', 'rigo@gmail.com', '$2y$10$Z1wsG.S9f/k4DQKiuqp/d.i9KaDghoHqxAVw0fDw7KyQEh0fLzRoa', 'Empleado', 'Guzman', 0, 93656565);
 
+
+CREATE TABLE `facturas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_proveedor` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `factura` varchar(45) NOT NULL,
+  `pago` float NULL,
+  `estado` smallint NOT NULL,
+   `created_at` timestamp,
+   `updated_at` timestamp,
+   constraint PK_facturas primary key (id)
+);
+
+CREATE TABLE `pagos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_proveedor` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `pago` float NULL,
+  `estado` smallint NOT NULL,
+   `created_at` timestamp,
+   `updated_at` timestamp,
+   constraint PK_pagos primary key (id)
+);
+
 --
 -- Llaves foraneas para la tabla `table_facturas`
 --
@@ -2370,4 +2388,10 @@ ALTER TABLE `table_compras`
 
 ALTER TABLE `table_compras`
   ADD CONSTRAINT `table_Compras_ibfk_2` FOREIGN KEY (`id_facturasc`) REFERENCES `table_facturasc` (`id`);
+
+ALTER TABLE `facturas`
+  ADD CONSTRAINT `Facturas_ibfk_1` FOREIGN KEY (`id_proveedor`) REFERENCES `table_clientes` (`id`);
+
+ALTER TABLE `pagos`
+  ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`id_proveedor`) REFERENCES `table_clientes` (`id`);
 COMMIT;

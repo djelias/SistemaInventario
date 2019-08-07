@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Control;
 use App\TableFacturasc;
+use App\Facturas;
+use App\Pagos;
 use App\TableCliente;
 use DB;
 use control1\http\Request\ControlRequest;
@@ -20,8 +22,9 @@ class ControlController extends Controller
     {
         $cliente = TableCliente::all();
         $fact = TableFacturasc::all();
+        $total = Facturas::all();
         $control = DB::table('Table_Facturascs')->select('id_proveedor')->distinct()->get();
-        return view('control.index',compact('control','cliente','fact'));
+        return view('control.index',compact('control','cliente','fact','total'));
     }
 
     /**
@@ -32,11 +35,8 @@ class ControlController extends Controller
 
     public function create()
     {
-        $personas = TableCliente::all();
-        $productos = TableProductos::all();
-        $factura = TableFacturas::all();
-        $venta = TableVentas::all();
-        return view('tableVentas.create', compact('personas', 'productos', 'factura', 'venta'));
+        $facturas = Facturas::all();
+        return view('tableCliente.create', compact('users'));
     }
 
     /**
@@ -46,55 +46,18 @@ class ControlController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)    {
-        /**$this->validate($request,[
-            'No_Facturas',
-            'Productos',
-            'cantidad'
+        $this->validate($request,[
+            'id_proveedor',
+            'fecha',
+            'factura',
+            'pago',
+            'abono',
+            'estado'
 
-            factura= cliente, fecha, total
-            Cliente= id
         ]);
         
-        TableVentas::create($request->all());
-        return redirect()->route('tableVentas.create')->with('success','Venta guardado con éxito');*/
-        $factura = new TableFacturas;
-        $factura->cliente = $request->get('cliente'); 
-        $factura->fecha = $request->get('fecha');
-        $factura->notaEnvio = $request->get('notaEnvio');
-        $factura->save();
-
-        $id_factura=$factura->id;
-        $Productos = $request->get('Productos');
-        $cantidad = $request->get('cantidad');
-
-        $total = 0;
-        $totalf = 0;
-        $cant = 0;
-        $cont = 0;
-        while ($cont < count($Productos)) {
-            $venta = new TableVentas;
-            $venta->id_facturas = $id_factura;
-            $venta->id_productos = $Productos[$cont];
-            $venta->cantidad = $cantidad[$cont];
-            $venta->notaEnvio = $request->get('notaEnvio');
-            $venta->save();
-
-            $pro = TableProductos::find($Productos[$cont]);
-            $total = ($pro->preciosProductos*$cantidad[$cont]);
-            $totalf = ($totalf + $total);
-
-            $cant = ($pro->cantidadProductos - $cantidad[$cont]);
-            $pro->cantidadProductos = $cant;
-            $pro->save();
-
-            $cont = $cont + 1;
-        }
-        $factura->totals = $totalf;
-        $factura->save();
-
-        //$factura->totals = $totalf;
-        
-        return redirect()->route('tableVentas.create')->with('success','Venta guardado con éxito');
+        Facturas::create($request->all());
+        return redirect()->route('control.index')->with('success','Factura guardada con éxito');
     }
 
     /**
@@ -105,9 +68,22 @@ class ControlController extends Controller
      */
     public function show($id)
     {
+        /**
         $tableFacturasc = TableCliente::find($id);
         $tableFac = TableFacturasc::all();
-        return view('control.show',compact('tableFacturasc','tableFac'));
+        $reg = DB::table('facturas')
+        ->join('pagos', 'pagos.id_proveedor', '=', 'facturas.id_proveedor')
+        ->where('facturas.id_proveedor', '=', $id)
+        ->get();
+        $registros = $reg->sortByDesc('fecha');
+        return view('control.show',compact('tableFacturasc','tableFac','registros'));*/
+        $tableFacturasc = TableCliente::find($id);
+        $facturas = DB::table('facturas')
+        ->select('*')
+        ->where('facturas.id_proveedor', '=', $id)
+        ->get();
+        $registros = $facturas->sortByDesc('fecha');
+        return view('control.show',compact('facturas','registros','tableFacturasc'));
     }
 
     /**
@@ -118,8 +94,8 @@ class ControlController extends Controller
      */
     public function edit($id)
     {
-        $tableVenta = TableVentas::find($id);
-        return view('tableVentas.edit',compact('tableVenta'));
+        $proveedor = TableCliente::find($id);
+        return view('control.edit',compact('proveedor'));
     }
 
     /**
@@ -155,6 +131,30 @@ class ControlController extends Controller
         return redirect()->route('tableVentas.index')->with('danger','No se Puede eliminar este registro porque esta asociado con otra asignación');
         
     }
+    }
+
+    public function factura($id)
+    {
+        $cliente = TableCliente::find($id);
+        $facturas = DB::table('facturas')
+        ->select('*')
+        ->where('facturas.id_proveedor', '=', $id)
+        ->get();
+        $registros = $facturas->sortByDesc('fecha');
+        return view('control.factura',compact('facturas','registros','cliente'));
+    }
+
+
+
+    public function abono($id)
+    {
+        $cliente = TableCliente::find($id);
+        $facturas = DB::table('facturas')
+        ->select('*')
+        ->where('facturas.id_proveedor', '=', $id)
+        ->get();
+        $registros = $facturas->sortByDesc('fecha');
+        return view('control.abono',compact('facturas','registros','cliente'));
     }
 
 }
