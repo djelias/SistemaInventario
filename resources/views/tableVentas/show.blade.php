@@ -10,12 +10,21 @@
 </div>
 
 {!! Form::open(['route'=>['tableVentas.detalle'], 'method'=>'GET', 'class'=>'navbar-form pull-right', 'role'=>'search'])!!}
-        <div class="input-group col-12">
-            <div class="col-sm-3">
-            {!! Form::date('fechainicial', null, ['class'=>'form-control', 'placeholder'=>'Buscar'])!!}</div>
+        <div class="col-lg-12 margin-tb">
+           <div class="row">
+    <div>
+      {!! form::label('Fecha inicial') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      {!! form::label('Fecha final') !!}
+    </div>
+     <div>
+      <i>{{ Form::date('fechainicial',NULL, ['class'=>'form-control','id'=>'fechainicial']) }} </i> 
+      <i>{{ Form::date('fechafinal',NULL, ['class'=>'form-control','id'=>'fechafinal']) }} </i> 
+      <button type="submit" class="glyphicon glyphicon-search btn-sm" data-toggle="tooltip" data-placement="top" title="Buscar"></button>
+  </div>
+      </div>
             
         </div>
-         <button type="submit" class="glyphicon glyphicon-search btn-sm" data-toggle="tooltip" data-placement="top" title="Buscar"></button>
+         
         {!! Form::close()!!}
 
 
@@ -55,7 +64,7 @@
     @endforeach
     
     Ventas realizadas: ${{$tot}}<br>
-    Ganancias del dia: ${{$gant}}<br>
+    Ganancias del periodo: ${{$gant}}<br>
 
     <div class="row"  >
     <div class="col-lg-12 margin-tb">

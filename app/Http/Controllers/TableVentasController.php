@@ -8,6 +8,7 @@ use App\TableVentas;
 use App\TableCompras;
 use App\TableCliente;
 use App\TableFacturas;
+use DB;
 use tableVentas1\http\Request\TableVentasRequest;
 
 class TableVentasController extends Controller
@@ -105,8 +106,13 @@ class TableVentasController extends Controller
      */
     public function show(Request $request,$id)
     {
-        $fecha = $request->get('fechainicial');
-        $tableFacturas = TableFacturas::orderBy('id','DESC')->nombre($fecha)->paginate(80);
+        $fechai = $request->get('fechainicial');
+        $fechaf = $request->get('fechafinal');
+        $tableFacturas = DB::table('Table_Facturas')
+        ->select('*')
+        ->whereBetween('fecha', [$fechai, $fechaf])
+        ->get();
+
         $tableVentas = TableVentas::all();
         $tableProductos = TableProductos::all();
         $tableCompras = TableCompras::all();
