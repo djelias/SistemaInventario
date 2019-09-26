@@ -2,11 +2,13 @@
 @section('content')
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-    	<h3 style="text-align:center"> Agregar nuevo abono a {{$cliente->Nombre_Cliente}}</h3>
+      <h3 style="text-align:center"> Agregar nuevo abono a {{$cliente->Nombre_Cliente}}, factura N°: {{$factur->factura}}</h3>
+    	<h3 style="text-align:center"> Monto: {{$factur->pago}}</h3>
     	<br>
       {{ Form::open(['route'=>'control.store', 'method'=>'POST']) }}
 
       <input type="hidden" name="id_proveedor" value="{{$cliente->id}}">
+      <input type="hidden" name="pertenece" value="{{$factur->factura}}">
 
     <div class="row">
     <div class="col-sm-3">

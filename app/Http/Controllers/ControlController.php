@@ -50,6 +50,7 @@ class ControlController extends Controller
             'id_proveedor',
             'fecha',
             'factura',
+            'pertenece',
             'pago',
             'abono',
             'estado'
@@ -146,15 +147,16 @@ class ControlController extends Controller
 
 
 
-    public function abono($id)
+    public function abono($id,$idf)
     {
         $cliente = TableCliente::find($id);
+        $factur = Facturas::find($idf);
         $facturas = DB::table('facturas')
         ->select('*')
         ->where('facturas.id_proveedor', '=', $id)
         ->get();
         $registros = $facturas->sortByDesc('fecha');
-        return view('control.abono',compact('facturas','registros','cliente'));
+        return view('control.abono',compact('facturas','registros','cliente','factur'));
     }
 
 }

@@ -68,7 +68,7 @@ Route::get('control/factura/{id}', [
       'as'  => 'control.factura'
   ]);
 
-Route::get('control/abono/{id}', [
+Route::get('control/abono/{id}/{idf}', [
       'uses'=> 'ControlController@abono',
       'as'  => 'control.abono'
   ]);

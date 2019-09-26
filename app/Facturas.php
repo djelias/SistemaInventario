@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Facturas extends Model
 {
-    protected $fillable = ['id_proveedor','fecha','factura','estado','pago','abono'];
+    protected $fillable = ['id_proveedor','fecha','factura','pertenece','estado','pago','abono'];
     protected $dates = ['created_at','updated_at'];
 
     public function scopeNombre($query, $id_proveedor)
