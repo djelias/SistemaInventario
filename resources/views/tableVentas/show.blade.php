@@ -42,6 +42,8 @@
     $tot=0;
     $gan=0;
     $gant=0;
+    $prom=0;
+    $prom1=0;
     ?>
 @foreach ($tableFacturas as $key => $value)
     <?php
@@ -60,11 +62,18 @@
 
         @endforeach
 
+    <?php
+
+        $prom=($gant*100)/$tot;
+        $prom1=round($prom*100)/100;
+    ?>
+
     
     @endforeach
     
     Ventas realizadas: ${{$tot}}<br>
-    Ganancias del periodo: ${{$gant}}<br>
+    Ganancias del periodo: ${{$gant}}<br><br>
+    Porcentaje de ganancia: {{$prom1}} %<br>
 
     <div class="row"  >
     <div class="col-lg-12 margin-tb">
@@ -132,38 +141,7 @@
     Dinero a ingresar: ${{$totalp1}}<br>
     Ganancias totales: ${{$totalp2}}<br>
 
-<div class="row"  >
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left ">
-            <h3 > Datos de las Compras</h3>
-            <br>
-        </div>
-    </div>
-</div>
 
-<?php
-    $subtotalc=0; 
-    $totalc=0;
-    $subtotalc1=0; 
-    $totalc1=0;
-    $subtotalc2=0; 
-    $totalc2=0; 
-    ?>
-@foreach ($tableCompras as $key => $value)
-    <?php
-
-        $subtotalc=($value->preciocompraProductos*$value->cantidad);
-        $totalc=$totalc+$subtotalc;
-        $subtotalc1=($value->preciosProductos*$value->cantidad);
-        $totalc1=$totalc1+$subtotalc1;
-        $subtotalc2=($value->Difererencia*$value->cantidad);
-        $totalc2=$totalc2+$subtotalc2;
-    
-    ?>
-    @endforeach
-    Compras realizadas: ${{$totalc}}<br>
-    Ventas esperadas: ${{$totalc1}}<br>
-    Ganancia al vender: ${{$totalc2}}<br>
 
  <div class="text-center">
     <a class="btn btn-primary" href="{{ url('/gestion') }}">Regresar</a>

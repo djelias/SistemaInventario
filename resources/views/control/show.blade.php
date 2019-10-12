@@ -30,8 +30,6 @@
     $subtotala=0; 
     $totala=0;
     $final=0;
-    $sum=0;
-    $sumt=0;
     ?>
 @foreach ($registros as $key => $value)
 <?php
@@ -56,6 +54,11 @@
         <td>
             @if($value->factura != NULL)
 
+            <?php $no=1;
+            $sum=0;
+            $sumt=0;
+            ?>
+
             @foreach ($registros as $key => $value2)
             @if($value2->pertenece == $value->factura)
 
@@ -63,7 +66,7 @@
 
         $sum=($value2->abono);
         $sumt=$sumt+$sum;
-   
+
             ?>
         @endif
     @endforeach
