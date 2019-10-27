@@ -2347,9 +2347,9 @@ CREATE TABLE `facturas` (
   `id_proveedor` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `factura` varchar(45) NULL,
-  `pertenece` varchar(45) NULL,
   `pago` float NULL,
-  `estado` smallint NULL,
+  `abono` float NULL,
+  `estado` smallint NOT NULL,
    `created_at` timestamp,
    `updated_at` timestamp,
    constraint PK_facturas primary key (id)
