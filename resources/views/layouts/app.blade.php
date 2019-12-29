@@ -112,6 +112,7 @@
         <ul class="dropdown-menu">
           <li><a href="{{ route('tableVentas.index') }}">Venta </a></li>
           <li><a href="{{ route('tableVentas.detalle') }}">Detalle </a></li>
+          <li><a href="{{ route('tableVentas.pendientes') }}">Notas pendientes de pago </a></li>
         </ul>
       </li>
     </ul>

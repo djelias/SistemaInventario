@@ -46,6 +46,7 @@ class TableFacturasController extends Controller
             'No_Facturas',
             'cliente',
             'fecha',
+            'fechaPago',
             'totals',
             'notaEnvio'
         ]);
@@ -91,11 +92,12 @@ class TableFacturasController extends Controller
           'No_Facturas',
             'cliente',
             'fecha',
+            'fechaPago',
             'totals',
             'notaEnvio'
         ]);
         TableFacturas::find($id)->update($request->all());
-        return redirect()->route('tableFacturas.index')->with('success','Factura actualizado con exito');
+        return redirect()->route('tableVentas.pendientes')->with('success','Factura actualizado con exito');
     }
 
     /**

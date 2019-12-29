@@ -29,8 +29,9 @@
 					<div class="form-group">
 						<label for="estado">Estado</label>
 						<select name="estado" class="form-control">
-							<option value="Cancelado">Venta</option>
-							<option value="Pendiente">En uso</option>
+							<option value="Cancelado">Cancelado</option>
+							<option value="Pendiente">Pendiente</option>
+							<option value="Uso">Uso ferreteria</option>
 							<option value="Pendiente">Ferreteria Tona.</option>
 						</select> 
 					</div>

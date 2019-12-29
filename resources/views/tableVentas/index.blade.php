@@ -34,7 +34,7 @@
     <tr>
       <th with="80px">No</th>
       <th style="text-align:center">Nombre cliente</th>
-      <th style="text-align:center">Numero de nota</th>
+      <th style="text-align:center">Nota de envio</th>
       <th style="text-align:center">Total</th>
       <th style="text-align:center">Accion</th>
     </tr>

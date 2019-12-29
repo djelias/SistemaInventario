@@ -9,6 +9,12 @@
     </div>
 </div>
 
+<div>
+        <a href="{{route('tableVentas.pendientes')}}" class="btn btn-success btn-lg">
+            <i class="glyphicon glyphicon-plus">Agregar factura</i>
+        </a>
+</div>
+
 {!! Form::open(['route'=>['tableVentas.detalle'], 'method'=>'GET', 'class'=>'navbar-form pull-right', 'role'=>'search'])!!}
         <div class="col-lg-12 margin-tb">
            <div class="row">

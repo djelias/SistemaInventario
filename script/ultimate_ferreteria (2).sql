@@ -130,7 +130,9 @@ CREATE TABLE `table_facturas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `cliente` int(11) NOT NULL,
   `fecha` date NOT NULL,
+  `estado` varchar NOT NULL,
   `totals` float NULL,
+  `notaEnvio` varchar NOT NULL,
    `created_at` timestamp,
    `updated_at` timestamp,
    constraint PK_tableFacturas primary key (id)
@@ -1634,6 +1636,7 @@ CREATE TABLE `table_ventas` (
   `id_facturas` int(11) NULL,
   `id_productos` int(10) NOT NULL,
   `cantidad` float NOT NULL,
+  `notaEnvio` varchar NOT NULL,
   `importe` int(11) NULL,
    `created_at` timestamp,
    `updated_at` timestamp,

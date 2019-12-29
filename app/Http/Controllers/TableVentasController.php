@@ -21,7 +21,7 @@ class TableVentasController extends Controller
     public function index(Request $request)
     {
         $nombre =$request->get('nombre');
-        $tableFactura = TableFacturas::orderBy('id','DESC')->nombre($nombre)->paginate(20);
+        $tableFactura = TableFacturas::orderBy('notaEnvio','ASC')->nombre($nombre)->paginate(20);
         return view('tableVentas.index',compact('tableFactura'));
     }
 
@@ -61,6 +61,7 @@ class TableVentasController extends Controller
         $factura = new TableFacturas;
         $factura->cliente = $request->get('cliente'); 
         $factura->fecha = $request->get('fecha');
+        $factura->estado = $request->get('estado');
         $factura->notaEnvio = $request->get('notaEnvio');
         $factura->save();
 
@@ -106,6 +107,7 @@ class TableVentasController extends Controller
      */
     public function show(Request $request,$id)
     {
+
         $fechai = $request->get('fechainicial');
         $fechaf = $request->get('fechafinal');
         $tableFacturas = DB::table('Table_Facturas')
@@ -116,7 +118,7 @@ class TableVentasController extends Controller
         $tableVentas = TableVentas::all();
         $tableProductos = TableProductos::all();
         $tableCompras = TableCompras::all();
-        return view('tableVentas.show',compact('tableVentas','tableProductos','tableCompras','tableFacturas', 'tableVent'));
+        return view('TableVentas.show', compact('tableVentas','tableProductos','tableCompras','tableFacturas', 'tableVent'));
     }
 
     /**
@@ -166,16 +168,39 @@ class TableVentasController extends Controller
     }
     }
 
-    public function detalle(Request $request)
+   public function detalle(Request $request)
     {
-        $fechai =$request->get('fechainicial');
-        $fechaf =$request->get('fechafinal');
-        $fecha = TableFacturas::where("fecha",">=","$fechai")
-         ->where("fecha","<=","$fechaf")
-         ->get();
-        $tableVentas = TableVentas::orderBy('id','DESC')->nombre($nombre)->paginate(20);
+        $fechai = $request->get('fechainicial');
+        $fechaf = $request->get('fechafinal');
+        $tableFacturas = DB::table('Table_Facturas')
+        ->select('*')
+        ->whereBetween('fecha', [$fechai, $fechaf])
+        ->get();
+
+        $tableVentas = TableVentas::all();
         $tableProductos = TableProductos::all();
-        return view('tableVentas.detalle',compact('tableVentas','fecha','tableProductos'));
+        $tableCompras = TableCompras::all();
+        return view('TableVentas.detalle', compact('tableVentas','tableProductos','tableCompras','tableFacturas', 'tableVent'));
     }
+
+    public function pendientes(Request $request)
+    {
+        $fech =$request->get('fechab');
+        $tableFacturas = DB::table('Table_Facturas')
+        ->select('*')
+        ->where("fecha","like","$fech")
+         ->get();
+        $tableVentas = TableVentas::all();
+        $tableCliente = TableCliente::all();
+        $tableProductos = TableProductos::all();
+        return view('tableVentas.pendientes',compact('tableVentas','fecha','tableFacturas','tableCliente'));
+    }
+
+    public function cancelar($id)
+    {
+        $tableFacturas = TableFacturas::find($id);
+        return view('tableVentas.cancelar',compact('tableFacturas'));
+    }
+
 }
  

@@ -45,6 +45,7 @@ class TableFacturascController extends Controller
         $this->validate($request,[
             'id_proveedor',
             'fecha',
+            'fechaPago',
             'totals',
             'estado',
             'notaEnvio'
@@ -90,6 +91,7 @@ class TableFacturascController extends Controller
         $this->validate($request,[
             'id_proveedor',
             'fecha',
+            'fechaPago',
             'totals',
             'estado',
             'notaEnvio'

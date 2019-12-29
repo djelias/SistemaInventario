@@ -37,18 +37,9 @@ Route::group(['middleware' => 'admin'], function() {
 });
 Route::group(['middleware' => 'auth'], function() {
 
- Route::resource('tableCliente','TableClienteController');
- Route::resource('tableProductos','TableProductosController');
- Route::resource('tableVentas','TableVentasController');
-
-
- Route::resource('control','ControlController');
-
- Route::resource('tableCompras','TableComprasController');
-
- Route::get('tableVentas/detalle', [
-      'uses'=> 'TableVentasController@detalle',
-      'as'  => 'tableVentas.detalle'
+    Route::get('tableVentas/pendientes', [
+      'uses'=> 'TableVentasController@pendientes',
+      'as'  => 'tableVentas.pendientes'
   ]);
 
 Route::get('tableCompras/detalle', [
@@ -56,14 +47,35 @@ Route::get('tableCompras/detalle', [
       'as'  => 'tableCompras.detalle'
   ]);
 
+ Route::get('tableVentas/detalle', [
+      'uses'=> 'TableVentasController@detalle',
+      'as'  => 'tableVentas.detalle'
+  ]);
+
+ Route::get('tableVentas/cancelar/{id}', [
+      'uses'=> 'TableVentasController@cancelar',
+      'as'  => 'tableVentas.cancelar'
+  ]);
+
+ Route::resource('tableCliente','TableClienteController');
+ Route::resource('tableProductos','TableProductosController');
+ Route::resource('control','ControlController');
+ Route::resource('tableCompras','TableComprasController');
+ Route::resource('tableVentas','TableVentasController');
+ Route::resource('tableFacturas','TableFacturasController');
+
+
+
+
+
 Route::get('tableCompras/visible', [
       'uses'=> 'TableComprasController@visible',
       'as'  => 'tableCompras.visible'
   ]);
 
-});
 
-Route::get('control/factura/{id}', [
+
+ Route::get('control/factura/{id}', [
       'uses'=> 'ControlController@factura',
       'as'  => 'control.factura'
   ]);
@@ -77,3 +89,8 @@ Route::get('control/guardar', [
       'uses'=> 'ControlController@guardar',
       'as'  => 'control.guardar'
   ]);
+
+});
+
+
+
